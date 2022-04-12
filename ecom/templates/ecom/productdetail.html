@@ -1,0 +1,44 @@
+{% extends 'ecom/base.html' %}  <!--extended from base -->
+{% load static %}
+{% block title %}Product Detail{% endblock title %}  <!--dynamic title filling extended from base-->
+{% block main-content %}
+<div class="container my-5">
+ <div class="row">
+  <div class="col-sm-6 text-center align-self-center">  <!--we are getting the exact product detail coz we used item.id in the home.html page-->
+      <!--it would be same as the home page {{item.product_image.url}} but we used context for the View in ProductDetailView class in simple words context-->
+   <img src="{{product.product_image.url}}" alt="" class="img-fluid img-thumbnail">
+  </div>  <!--becuse it has one object only so we are not using for loop in here-->
+  <div class="col-sm-5 offset-sm-1">
+   <h2>Product Title: {{product.title}}</h2>
+   <hr>
+   <p>Product Description: Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, at. Dignissimos rerum incidunt temporibus laudantium. Rem, eveniet corporis. Itaque delectus quae nesciunt nemo, maiores minus deserunt vel. Vero, nulla quisquam!</p> <br>
+   <h4>${{product.discounted_price}} <small class="fw-light text-decoration-line-through">${{product.selling_price}}</small></h4> <br>
+   {% if request.user.is_authenticated %}
+   <!--if the item exists already--><!--then we'll show goto cart button which will direct to showcart-->
+   {% if item_exists_in_cart %}
+   <a href="{% url 'showcart' %}" class="btn btn-primary shadow px-5 py-2">Go to cart</a>
+   {% else %}
+   <!--now when we click add to cart we gonna pass a hidden value that is product id that we made-->
+   <form action="/add-to-cart" class="d-inline">  <!--this is a url just as what we wrote in href down which is used to direct this to add to cart after form-->
+<!--in this form we'll create hidden field-->
+    <input type="hidden" name="prod_id" value="{{product.id}}" id="prod_id">  <!--the name prod-id can be anything-->
+    <button type="submit" class="btn btn-primary shadow px-5 py-2">Add To Cart</button> <!-- we removed a href from down and added here the button instead of that from down-->
+   </form>
+   {% endif %}
+   {% endif %}
+
+   <!--for anonymous user-->
+   {% if not request.user.is_authenticated %}
+   <form action="/add-to-cart" class="d-inline">  <!--this is a url just as what we wrote in href down which is used to direct this to add to cart after form-->
+    <!--in this form we'll create hidden field-->
+        <input type="hidden" name="prod_id" value="{{product.id}}" id="prod_id">  <!--the name prod-id can be anything-->
+        <button type="submit" class="btn btn-primary shadow px-5 py-2">Add To Cart</button> <!-- we removed a href from down and added here the button instead of that from down-->
+       </form>
+   {% endif %}
+   <a href="{% url 'showcart' %}" class="btn btn-danger shadow px-5 py-2 ms-4">Buy Now</a>
+   <h6 class="mt-5">Product Details Page</h6>
+   
+  </div>
+ </div>
+</div>
+{% endblock main-content %}

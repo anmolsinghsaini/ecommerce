@@ -1,0 +1,45 @@
+{% extends 'ecom/base.html' %} <!--extends base-->
+{% load static %}
+{% block title %}Checkout{% endblock title %}  <!--dynamic title filling-->
+{% block main-content %}
+<div class="container">
+ <div class="row mt-5">
+  <div class="col-sm-6">
+    <h4>Order Summary</h4>
+    <hr>
+    {% for item in cart_items %}
+      <div class="card mb-2">
+        <div class="card-body">
+          <h5>Product: {{item.product.title}}</h5>
+          <p>Quantity: {{item.quantity}}</p>
+          <p class="fw-bold">Price: {{item.total_cost_product}}</p>  <!--her we have to show the totol of each product one by one so we gonna do that in models.py and in Cart class in @property-->
+        </div>
+      </div>
+    {% endfor %}
+    <p class="fw-bold">Total Cost + $ 3.0 = {{total_amount}}</p>
+  </div>
+  <div class="col-sm-4 offset-sm-1">
+    <h4>Choose Shipping Address</h4>
+    <hr>
+    <form action="/paymentdone">  <!--we need to send this data to payment done and for that we have to build a view and also a url-->
+      {% for ad in addr %}
+      <div class="card">
+        <div class="card-body">
+        <h5>{{ad.name}}</h5>  <!--this data will be coming from database-->
+        <p>{{ad.locality}}, {{ad.city}}, {{ad.state}}, {{ad.zipcode}}</p>
+        </div>
+      </div>
+        <div class="form-check mt-2 mb-5">
+          <input class="form-check-input" type="radio" name="custid" id="custaddr{{forloop.counter}}" value="{{ad.id}}">   <!--here we are gonna provide id id="custaddr{{forloop.counter}}" coz we want that the id remain dynamic and doesn't remain the same and we get that in payment_done view-->
+          <label class="form-check-label fw-bold" for="custaddr{{forloop.counter}}">  <!--basically now we want that our cart data in cart gets deleted and transfered to order placed in the admins.py -->
+            Address: {{forloop.counter}} </label>
+        </div>
+        {% endfor %}
+        <div class="text-end">
+          <button type="submit" class="btn btn-warning mt-3 px-5 fw-bold">Continue</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock main-content %}

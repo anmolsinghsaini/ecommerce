@@ -1,0 +1,27 @@
+{% extends 'ecom/base.html' %}
+{% load static %}
+{% block title %}Orders{% endblock title %}
+{% block main-content %}
+<div class="container my-5">
+ <div class="row">
+ <h3><span class="text-capitalize">{{request.user}}</span></h3>
+  <div class="col-sm-2 border-end">
+   <ul class="list-unstyled">
+    
+   </ul>
+  </div>
+  <div class="col-sm-9 offset-sm-1">
+      {% for o in om %}
+   <div class="row shadow-sm mb-3">
+       <div class="col=sm=2">
+           <img src="{{o.product.product_image.url}}" alt="" srcset="" class="img-fluid" height="150" width="150">
+       </div>
+       <div class="col-sm-7">
+           <p>Product: {{o.product.title}}</p>
+           <p>Quantity: {{o.quantity}}</p>
+           <p>Price: {{o.total_cost_product}}</p>  <!--we have to do the same which did in Cart class in models.py @property-->
+       </div>
+       {% endfor %}
+ </div>
+</div>
+{% endblock main-content %}

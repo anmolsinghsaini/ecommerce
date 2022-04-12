@@ -1,0 +1,29 @@
+{% extends 'ecom/base.html' %}  <!--this page is extending from base.html-->
+{% load static %}
+{% block title %}Home{% endblock title %}  <!--filling the dynamic content in the title-->
+
+
+
+
+
+{% block main-content %}
+<!-- 1st Product Slider -->
+<div class="m-3">
+ <h2>Product of The Day</h2>  <!--the product detail page is for product1 only-->
+ <!-- Slider 1 -->  <!--the slider1 id is the code written in js myscript change it-->
+ <div class="owl-carousel" id="slider1">  <!--below is the product page url name and products images and prices-->
+    {% for item in product_list%}  <!--below we write .url because we saved that in url form-->
+  <a href="{% url 'product-detail' item.id %}" class="btn"><div class="item"><img src="{{item.product_image.url}}" alt="" height="200px"><span class="fw-bold">{{item.title}}</span><br><span class="fs-5">${{item.discounted_price}}</span></div></a>
+    {%endfor%} <!--above we added url then url-name then pk that like item.id-->
+ </div>
+</div>
+<!-- End 1st Product Slider -->
+
+
+<!-- End Payment Info Section -->
+
+<!-- 2nd Product Slider -->
+
+<!-- End 2nd Product Slider -->
+{% endblock main-content %}
+
